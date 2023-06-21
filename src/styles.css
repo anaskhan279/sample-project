@@ -1,0 +1,36 @@
+.input-box{
+    margin-top: 20px;
+    margin-left: 20px;
+    display: flex;
+}
+.input{
+    padding: 5px;
+    border-radius: 5px;
+}
+.comment{
+    margin-left: 5px;
+    border-radius: 5px;
+    background: aqua;
+    color: white;
+    cursor: pointer;
+}
+
+.comment-box{
+    margin-top: 5px;
+    border: 1px solid black;
+    width: 200px;
+    border-radius: 5px;
+    background-color: #d3d3d3e0;
+    margin-bottom: 5px;
+}
+.reply{
+    font-size: 12px;
+    padding: 5px;
+    border-radius: 5px;
+    color: #4e4e4e;
+    font-weight: 600;
+    cursor: pointer;
+}
+.message{
+    padding: 7px;
+}
