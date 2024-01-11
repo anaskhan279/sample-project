@@ -1,0 +1,111 @@
+import { useState } from "react";
+import Comment from "./component/Comment"
+
+const insertLike=(comments,cmtId)=>{
+  if(comments.id === cmtId)
+  {
+    comments.likes +=1;
+    return comments;
+  }
+  let latest = comments.item.map((obj)=>{
+    return insertLike(obj,cmtId);
+  })
+
+  return {...comments, latest}
+}
+
+const insertNode=(comments,input,cmtId)=>{
+  if(comments.id === cmtId)
+  {
+    comments.item.push({
+      id:Math.random(),
+      date:new Date().toDateString(),
+      data:input,
+      likes:0,
+      item:[]
+    })
+
+    return comments;
+  }
+
+  let latest = comments.item.map((obj)=>{
+    return insertNode(obj,input,cmtId)
+  })
+
+  return {...comments,item:latest}
+}
+
+let comment=
+{
+  id:1,
+  item:[
+    {
+      id:3,
+      date:new Date('March 20 2024'),
+      data:"this is second",
+      likes:0,
+      item:[]
+    },
+    {
+      id:4,
+      date:new Date('January 20 2023'),
+      data:"this is first",
+      likes:0,
+      item:[
+        {
+          id:5,
+          date:new Date('March 20 2025'),
+          data:"this is second",
+          likes:0,
+          item:[]
+        },
+        {
+          id:6,
+          date:new Date('January 20 2021'),
+          data:"this is first",
+          likes:0,
+          item:[]
+        }
+      ]
+    }
+  ]
+};
+
+//just added some raw date with random dates to see the sorting function works properly or not.
+
+const sortCom =(comment)=>{
+  comment.item.sort(function(a,b){
+      return new Date(a.date) - new Date(b.date);
+   })
+  comment.item.forEach((nestedComment) => {
+    sortCom(nestedComment);
+  });
+  return comment;
+}
+  
+const App = () => {
+      const handleInsert = (input,cmtId) => {
+      const finalStructure = insertNode(comments,input,cmtId)
+      setComments(finalStructure)
+  }
+  const sortComments=()=>{
+    setComments((prevComments) => {
+      const newData = sortCom({ ...prevComments }); // Clone the previous state
+      return newData;
+    });
+  }
+  const addLikes = (cmtId)=>{
+     const finalData = insertLike(comments,cmtId);
+     setComments(finalData);
+  }
+
+  const [comments,setComments] = useState(comment)
+  // console.log(comments);
+  return (
+    <div className="App">
+         <Comment comment={comments} handleInsert={handleInsert} addlikes={addLikes} sortComments={sortComments}/>     
+    </div>
+  );
+};
+
+export default App;
